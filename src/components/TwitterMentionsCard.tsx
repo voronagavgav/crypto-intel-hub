@@ -1,10 +1,11 @@
 import { Twitter, Search, ExternalLink } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { DraggableRow } from "@/components/DraggableRow";
 
-export const TwitterMentionsCard = () => {
+export const TwitterMentionsCard = ({ isUnlocked }: { isUnlocked: boolean }) => {
   const officialHandle = "@ExampleToken";
   
   const mentions = [
@@ -29,7 +30,7 @@ export const TwitterMentionsCard = () => {
   ];
 
   return (
-    <Card className="bg-gradient-card border-border shadow-glow">
+    <>
       <CardHeader>
         <CardTitle className="text-foreground flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -41,39 +42,38 @@ export const TwitterMentionsCard = () => {
           </Badge>
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-3">
         <div className="flex gap-2">
           <Input
             placeholder="Search Twitter mentions..."
-            className="bg-secondary border-border"
+            className="bg-secondary border-border h-10"
           />
-          <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+          <Button className="bg-primary text-primary-foreground hover:bg-primary/90 h-10">
             <Search className="h-4 w-4 mr-2" />
             Search
           </Button>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-2">
           {mentions.map((mention, idx) => (
-            <div
-              key={idx}
-              className="rounded-lg bg-secondary/50 p-4 border border-border/30 hover:bg-secondary/70 transition-colors"
-            >
-              <div className="flex items-start justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-primary font-semibold">{mention.author}</span>
-                  <span className="text-muted-foreground text-sm">{mention.timestamp}</span>
+            <DraggableRow key={`mention-${idx}`} id={`mention-${idx}`} isUnlocked={isUnlocked}>
+              <div className="rounded-lg bg-secondary/50 p-3 border border-border/30 w-full">
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-primary font-semibold text-sm">{mention.author}</span>
+                    <span className="text-muted-foreground text-xs">{mention.timestamp}</span>
+                  </div>
+                  <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                    <ExternalLink className="h-3 w-3" />
+                  </Button>
                 </div>
-                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                  <ExternalLink className="h-4 w-4" />
-                </Button>
+                <p className="text-foreground text-sm mb-1">{mention.text}</p>
+                <span className="text-muted-foreground text-xs">{mention.engagement}</span>
               </div>
-              <p className="text-foreground text-sm mb-2">{mention.text}</p>
-              <span className="text-muted-foreground text-xs">{mention.engagement}</span>
-            </div>
+            </DraggableRow>
           ))}
         </div>
       </CardContent>
-    </Card>
+    </>
   );
 };
