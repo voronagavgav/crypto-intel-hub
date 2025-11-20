@@ -1,47 +1,57 @@
 import { Copy, ExternalLink } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import { DraggableRow } from "@/components/DraggableRow";
 
-export const DeploymentInfoCard = () => {
+export const DeploymentInfoCard = ({ isUnlocked }: { isUnlocked: boolean }) => {
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
     toast.success(`${label} copied to clipboard`);
   };
 
   return (
-    <Card className="bg-gradient-card border-border shadow-glow">
+    <>
       <CardHeader>
         <CardTitle className="text-foreground flex items-center gap-2">
           <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
           Deployment Information
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-3">
+      <CardContent className="space-y-2">
+        <DraggableRow id="deployer-address" isUnlocked={isUnlocked}>
           <InfoRow
             label="Deployer Address"
             value="0xabcdef1234567890abcdef1234567890abcdef12"
             copyable
             onCopy={() => copyToClipboard("0xabcdef1234567890abcdef1234567890abcdef12", "Deployer Address")}
           />
+        </DraggableRow>
+        <DraggableRow id="deployment-tx" isUnlocked={isUnlocked}>
           <InfoRow
             label="Deployment Tx"
             value="0x9876543210fedcba9876543210fedcba98765432"
             copyable
             linkable
           />
+        </DraggableRow>
+        <DraggableRow id="platform" isUnlocked={isUnlocked}>
           <InfoRow label="Platform" value="Uniswap V2" badge="UniswapV2" />
+        </DraggableRow>
+        <DraggableRow id="rpc-endpoint" isUnlocked={isUnlocked}>
           <InfoRow label="RPC Endpoint" value="https://eth-mainnet.g.alchemy.com" />
-          <div className="pt-2">
+        </DraggableRow>
+        <DraggableRow id="arkham-intel" isUnlocked={isUnlocked}>
+          <div className="flex items-center justify-between w-full">
+            <span className="text-muted-foreground text-sm">Intelligence</span>
             <Badge variant="outline" className="border-warning text-warning">
-              Arkham Intelligence Available
+              Arkham Available
             </Badge>
           </div>
-        </div>
+        </DraggableRow>
       </CardContent>
-    </Card>
+    </>
   );
 };
 
@@ -60,7 +70,7 @@ const InfoRow = ({
   linkable?: boolean;
   onCopy?: () => void;
 }) => (
-  <div className="flex items-center justify-between py-2 border-b border-border/50">
+  <div className="flex items-center justify-between w-full">
     <span className="text-muted-foreground text-sm">{label}</span>
     <div className="flex items-center gap-2">
       {badge && (

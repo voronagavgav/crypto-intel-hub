@@ -1,11 +1,12 @@
 import { Shield, AlertTriangle, CheckCircle2, XCircle } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { DraggableRow } from "@/components/DraggableRow";
 
-export const SecurityAnalysisCard = () => {
+export const SecurityAnalysisCard = ({ isUnlocked }: { isUnlocked: boolean }) => {
   return (
-    <Card className="bg-gradient-card border-border shadow-glow">
+    <>
       <CardHeader>
         <CardTitle className="text-foreground flex items-center gap-2">
           <Shield className="h-5 w-5 text-primary" />
@@ -24,12 +25,22 @@ export const SecurityAnalysisCard = () => {
               </div>
             </AccordionTrigger>
             <AccordionContent>
-              <div className="space-y-2 pt-2">
-                <SecurityItem status="pass" label="Open Source" value="Verified" />
-                <SecurityItem status="fail" label="Proxy Contract" value="Yes - Upgradeable" />
-                <SecurityItem status="fail" label="Mint Function" value="Present" />
-                <SecurityItem status="pass" label="Self-Destruct" value="Not Found" />
-                <SecurityItem status="pass" label="External Calls" value="Safe" />
+              <div className="space-y-1 pt-2">
+                <DraggableRow id="sec-opensource" isUnlocked={isUnlocked}>
+                  <SecurityItem status="pass" label="Open Source" value="Verified" />
+                </DraggableRow>
+                <DraggableRow id="sec-proxy" isUnlocked={isUnlocked}>
+                  <SecurityItem status="fail" label="Proxy Contract" value="Yes - Upgradeable" />
+                </DraggableRow>
+                <DraggableRow id="sec-mint" isUnlocked={isUnlocked}>
+                  <SecurityItem status="fail" label="Mint Function" value="Present" />
+                </DraggableRow>
+                <DraggableRow id="sec-selfdestruct" isUnlocked={isUnlocked}>
+                  <SecurityItem status="pass" label="Self-Destruct" value="Not Found" />
+                </DraggableRow>
+                <DraggableRow id="sec-external" isUnlocked={isUnlocked}>
+                  <SecurityItem status="pass" label="External Calls" value="Safe" />
+                </DraggableRow>
               </div>
             </AccordionContent>
           </AccordionItem>
@@ -99,7 +110,7 @@ export const SecurityAnalysisCard = () => {
           </AccordionItem>
         </Accordion>
       </CardContent>
-    </Card>
+    </>
   );
 };
 
@@ -128,7 +139,7 @@ const SecurityItem = ({
   };
 
   return (
-    <div className="flex items-center justify-between py-2 px-3 rounded bg-secondary/30 border border-border/20">
+    <div className="flex items-center justify-between py-2 px-3 rounded bg-secondary/30 border border-border/20 w-full">
       <div className="flex items-center gap-2">
         {getIcon()}
         <span className="text-foreground text-sm">{label}</span>

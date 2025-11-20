@@ -1,10 +1,11 @@
 import { BarChart3, ExternalLink } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { DraggableRow } from "@/components/DraggableRow";
 
-export const MarketIntelCard = () => {
+export const MarketIntelCard = ({ isUnlocked }: { isUnlocked: boolean }) => {
   return (
-    <Card className="bg-gradient-card border-border shadow-glow">
+    <>
       <CardHeader>
         <CardTitle className="text-foreground flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -17,17 +18,29 @@ export const MarketIntelCard = () => {
           </Button>
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <MetricBox label="Current Price" value="$0.00123" />
-          <MetricBox label="Current Liquidity" value="$234.5K" />
-          <MetricBox label="Market Cap" value="$1.15M" />
-          <MetricBox label="Fully Diluted Value" value="$1.23M" />
-          <MetricBox label="Volume (24h)" value="$156.2K" />
-          <MetricBox label="Price Change (24h)" value="+15.3%" valueColor="text-success" />
+      <CardContent className="space-y-2">
+        <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
+          <DraggableRow id="gecko-current-price" isUnlocked={isUnlocked}>
+            <MetricBox label="Current Price" value="$0.00123" />
+          </DraggableRow>
+          <DraggableRow id="gecko-liquidity" isUnlocked={isUnlocked}>
+            <MetricBox label="Current Liquidity" value="$234.5K" />
+          </DraggableRow>
+          <DraggableRow id="gecko-market-cap" isUnlocked={isUnlocked}>
+            <MetricBox label="Market Cap" value="$1.15M" />
+          </DraggableRow>
+          <DraggableRow id="gecko-fdv" isUnlocked={isUnlocked}>
+            <MetricBox label="Fully Diluted Value" value="$1.23M" />
+          </DraggableRow>
+          <DraggableRow id="gecko-volume" isUnlocked={isUnlocked}>
+            <MetricBox label="Volume (24h)" value="$156.2K" />
+          </DraggableRow>
+          <DraggableRow id="gecko-price-change" isUnlocked={isUnlocked}>
+            <MetricBox label="Price Change (24h)" value="+15.3%" valueColor="text-success" />
+          </DraggableRow>
         </div>
       </CardContent>
-    </Card>
+    </>
   );
 };
 
@@ -40,8 +53,8 @@ const MetricBox = ({
   value: string;
   valueColor?: string;
 }) => (
-  <div className="rounded-lg bg-secondary/50 p-4 border border-border/30">
-    <div className="text-muted-foreground text-sm mb-2">{label}</div>
-    <div className={`text-2xl font-bold ${valueColor}`}>{value}</div>
+  <div className="rounded-lg bg-secondary/50 p-3 border border-border/30 w-full">
+    <div className="text-muted-foreground text-xs mb-1">{label}</div>
+    <div className={`text-xl font-bold ${valueColor}`}>{value}</div>
   </div>
 );
